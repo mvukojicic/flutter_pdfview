@@ -41,32 +41,32 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 ## Options
 
 | Name                  | Android | iOS |      Default      |
-| :-------------------- | :-----: | :-: | :---------------: |
-| defaultPage           |   ✅    | ✅  |        `0`        |
-| onViewCreated         |   ✅    | ✅  |      `null`       |
-| onRender              |   ✅    | ✅  |      `null`       |
-| onPageChanged         |   ✅    | ✅  |      `null`       |
-| onError               |   ✅    | ✅  |      `null`       |
-| onPageError           |   ✅    | ❌  |      `null`       |
-| onLinkHandle          |   ✅    | ✅  |      `null`       |
-| gestureRecognizers    |   ✅    | ✅  |      `null`       |
-| filePath              |   ✅    | ✅  |                   |
-| pdfData               |   ✅    | ✅  |                   |
-| fitPolicy             |   ✅    | ❌  | `FitPolicy.WIDTH` |
-| enableSwipe           |   ✅    | ✅  |      `true`       |
-| swipeHorizontal       |   ✅    | ✅  |      `false`      |
-| password              |   ✅    | ✅  |      `null`       |
-| nightMode             |   ✅    | ❌  |      `false`      |
-| password              |   ✅    | ✅  |      `null`       |
-| autoSpacing           |   ✅    | ✅  |      `true`       |
-| pageFling             |   ✅    | ✅  |      `true`       |
-| pageSnap              |   ✅    | ❌  |      `true`       |
-| preventLinkNavigation |   ✅    | ✅  |      `false`      |
+|:----------------------|:-------:|:---:|:-----------------:|
+| defaultPage           |    ✅    |  ✅  |        `0`        |
+| onViewCreated         |    ✅    |  ✅  |      `null`       |
+| onRender              |    ✅    |  ✅  |      `null`       |
+| onPageChanged         |    ✅    |  ✅  |      `null`       |
+| onError               |    ✅    |  ✅  |      `null`       |
+| onPageError           |    ✅    |  ❌  |      `null`       |
+| onLinkHandle          |    ✅    |  ✅  |      `null`       |
+| gestureRecognizers    |    ✅    |  ✅  |      `null`       |
+| filePath              |    ✅    |  ✅  |                   |
+| pdfData               |    ✅    |  ✅  |                   |
+| fitPolicy             |    ✅    |  ❌  | `FitPolicy.WIDTH` |
+| enableSwipe           |    ✅    |  ✅  |      `true`       |
+| swipeHorizontal       |    ✅    |  ✅  |      `false`      |
+| password              |    ✅    |  ✅  |      `null`       |
+| nightMode             |    ✅    |  ❌  |      `false`      |
+| password              |    ✅    |  ✅  |      `null`       |
+| autoSpacing           |    ✅    |  ✅  |      `true`       |
+| pageFling             |    ✅    |  ✅  |      `true`       |
+| pageSnap              |    ✅    |  ❌  |      `true`       |
+| preventLinkNavigation |    ✅    |  ✅  |      `false`      |
 
 ## Controller Options
 
 | Name           |     Description      | Parameters |     Return     |
-| :------------- | :------------------: | :--------: | :------------: |
+|:---------------|:--------------------:|:----------:|:--------------:|
 | getPageCount   | Get total page count |     -      | `Future<int>`  |
 | getCurrentPage |   Get current page   |     -      | `Future<int>`  |
 | setPage        |    Go to/Set page    | `int page` | `Future<bool>` |
