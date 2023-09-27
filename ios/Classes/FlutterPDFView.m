@@ -163,6 +163,9 @@
         [self setPage:call result:result];
     } else if ([[call method] isEqualToString:@"updateSettings"]) {
         [self onUpdateSettings:call result:result];
+    } else if ([[call method] isEqualToString:@"highlightSearchText"]) {
+              [_pdfView highlightSearchText:call result:result];
+              result(nil);
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -230,6 +233,77 @@
           [UIView animateWithDuration:0.2 animations:^{
             self->_pdfView.scaleFactor = self->_pdfView.scaleFactorForSizeToFit;
           }];
+        }
+    }
+}
+- (void)highlightSearchText:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSUInteger pageIndex;
+    PDFDocument *pdfDocument = _pdfView.document;
+    NSDictionary<NSString*, NSString*>* arguments = [call arguments];
+    NSString* searchText = arguments[@"text"];
+    [self removeSearchHighlights];
+
+    NSMutableArray *allSelections = [NSMutableArray array];
+
+    for (pageIndex = 0; pageIndex < pdfDocument.pageCount; pageIndex++) {
+        PDFPage *pdfPage = [pdfDocument pageAtIndex:pageIndex];
+        NSArray<PDFSelection *> *searchResults = [pdfDocument findString:searchText withOptions:NSCaseInsensitiveSearch];
+
+        for (PDFSelection *selection in searchResults) {
+            PDFAnnotation *annotation = [[PDFAnnotation alloc] initWithBounds:[selection boundsForPage:pdfPage] forType:PDFAnnotationSubtypeHighlight withProperties:nil];
+            annotation.color = [UIColor colorWithRed: 0.96 green: 0.93 blue: 0.76 alpha: 1.00]; // Semi-transparent yellow color
+            annotation.page = pdfPage;
+            [pdfPage addAnnotation:annotation];
+
+            // Set the blending mode for the annotation color
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            CGContextSetBlendMode(context, kCGBlendModeMultiply);
+            [annotation drawWithBox:kPDFDisplayBoxMediaBox inContext:context];
+
+            [allSelections addObject:selection];
+        }
+    }
+
+    _pdfView.highlightedSelections = allSelections;
+
+    // Set the page to the first occurrence of the search text
+    PDFSelection *firstOccurrence = [self findFirstOccurrenceOfSearchText:searchText inDocument:pdfDocument];
+    if (firstOccurrence) {
+        PDFPage *firstOccurrencePage = firstOccurrence.pages[0];
+        [_pdfView goToPage:firstOccurrencePage];
+    }
+
+    result([NSNumber numberWithBool:YES]);
+}
+
+
+- (PDFSelection *)findFirstOccurrenceOfSearchText:(NSString *)searchText inDocument:(PDFDocument *)pdfDocument {
+    for (NSUInteger pageIndex = 0; pageIndex < pdfDocument.pageCount; pageIndex++) {
+        PDFPage *pdfPage = [pdfDocument pageAtIndex:pageIndex];
+        NSArray<PDFSelection *> *searchResults = [pdfDocument findString:searchText withOptions:NSCaseInsensitiveSearch];
+
+        if ([searchResults count] > 0) {
+            return [searchResults objectAtIndex:0];
+        }
+    }
+    return nil;
+}
+
+
+- (void)removeSearchHighlights {
+    for (NSUInteger pageIndex = 0; pageIndex < _pdfView.document.pageCount; pageIndex++) {
+        PDFPage *pdfPage = [_pdfView.document pageAtIndex:pageIndex];
+        NSArray<PDFAnnotation *> *annotations = [pdfPage annotations];
+
+        // Iterate through the annotations and remove them if they are highlights
+        NSMutableArray<PDFAnnotation *> *annotationsToRemove = [NSMutableArray array];
+        for (PDFAnnotation *annotation in annotations) {
+            if ([annotation.type isEqualToString:@"Highlight"]) {
+                [annotationsToRemove addObject:annotation];
+            }
+        }
+        for (PDFAnnotation *annotation in annotationsToRemove) {
+            [pdfPage removeAnnotation:annotation];
         }
     }
 }

@@ -8,7 +8,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 API_AVAILABLE(ios(11.0))
-@interface FLTPDFViewController : NSObject <FlutterPlatformView, PDFViewDelegate> 
+@interface FLTPDFViewController : NSObject <FlutterPlatformView, PDFViewDelegate>
 
 - (instancetype)initWithFrame:(CGRect)frame
                viewIdentifier:(int64_t)viewId
@@ -30,6 +30,8 @@ API_AVAILABLE(ios(11.0))
 - (void)getCurrentPage:(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)setPage:(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)onUpdateSettings:(FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)highlightSearchText:(FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)removeSearchHighlights;
 @end
 
 API_AVAILABLE(ios(11.0))
