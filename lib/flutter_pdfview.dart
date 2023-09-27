@@ -330,6 +330,12 @@ class PDFViewController {
     return res;
   }
 
+  Future<void> highlightSearchText(String searchText) async {
+    await _channel.invokeMethod('highlightSearchText', <String, dynamic>{
+      'text': searchText,
+    });
+  }
+
   Future<void> _updateWidget(PDFView widget) async {
     _widget = widget;
     await _updateSettings(_PDFViewSettings.fromWidget(widget));
@@ -342,11 +348,5 @@ class PDFViewController {
     }
     _settings = setting;
     return _channel.invokeMethod('updateSettings', updateMap);
-  }
-
-  Future<void> highlightSearchText(String searchText) async {
-    await _channel.invokeMethod('highlightSearchText', <String, dynamic>{
-      'text': searchText,
-    });
   }
 }
